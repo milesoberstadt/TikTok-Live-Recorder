@@ -53,7 +53,7 @@ def is_user_in_live(user: str) -> bool:
     if not DEBUG:
         return is_live
 
-    current_date = strftime("%Y.%m.%d_%H-%M-%S", gmtime())
+    current_date = strftime("%Y.%m.%d_%H-%M-%S")
     if not os.path.isdir("logs"):
         os.mkdir("logs")
     file = open(f"logs/{current_date}_{'ONLINE' if is_live else 'OFFLINE'}.json", "w")
@@ -75,7 +75,7 @@ def get_live_url(room_id: str) -> str:
 def start_recording(user: str, room_id: str) -> None:
     live_url = get_live_url(room_id)
 
-    current_date = strftime("%Y.%m.%d_%H-%M-%S", gmtime())
+    current_date = strftime("%Y.%m.%d_%H-%M-%S")
     output = f"TK_{user}_{current_date}.mp4"
 
     print("\n[*] RECORDING... ")
