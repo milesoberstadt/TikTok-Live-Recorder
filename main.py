@@ -7,6 +7,7 @@ from argparse import RawTextHelpFormatter
 import os
 
 TIMEOUT = 5
+DEBUG = True
 
 def banner() -> None:
     print("""
@@ -48,8 +49,18 @@ def is_user_in_live(user: str) -> bool:
     room_id = get_room_id(user)
     url = f"https://www.tiktok.com/api/live/detail/?aid=1988&roomID={room_id}"
     content = req.get(url).text
+    is_live = '"status":4' not in content
+    if not DEBUG:
+        return is_live
 
-    return '"status":4' not in content
+    current_date = strftime("%Y.%m.%d_%H-%M-%S", gmtime())
+    if not os.path.isdir("logs"):
+        os.mkdir("logs")
+    file = open(f"logs/{current_date}_{'ONLINE' if is_live else 'OFFLINE'}.json", "w")
+    file.write(content)
+    file.close
+
+    return is_live
 
 
 def get_live_url(room_id: str) -> str:
