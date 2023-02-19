@@ -7,7 +7,7 @@ from argparse import RawTextHelpFormatter
 import os
 
 TIMEOUT = 5
-DEBUG = True
+DEBUG = False
 DEFAULT_OUTPUT_DIR = "output/"
 
 def banner() -> None:
