@@ -8,6 +8,7 @@ import os
 
 TIMEOUT = 5
 DEBUG = True
+DEFAULT_OUTPUT_DIR = "output/"
 
 def banner() -> None:
     print("""
@@ -72,11 +73,15 @@ def get_live_url(room_id: str) -> str:
     return live_url_m3u8
 
 
-def start_recording(user: str, room_id: str) -> None:
+def start_recording(user: str, room_id: str, output_dir: str) -> None:
     live_url = get_live_url(room_id)
 
     current_date = strftime("%Y.%m.%d_%H-%M-%S")
-    output = f"TK_{user}_{current_date}.mp4"
+    output = os.path.join(output_dir, user, f"{current_date}.mp4")
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
+    if not os.path.isdir(os.path.join(output_dir,user)):
+        os.mkdir(os.path.join(output_dir,user))
 
     print("\n[*] RECORDING... ")
     
@@ -89,6 +94,7 @@ def main():
     banner()
 
     user: str
+    output_dir: str
     mode: str
     room_id: str
 
@@ -96,6 +102,10 @@ def main():
     parser.add_argument("-user",
                         dest="user",
                         help="record a live from the username.",
+                        action='store')
+    parser.add_argument("-output",
+                        dest="output_dir",
+                        help="save destination for TikTok Live videos",
                         action='store')
     parser.add_argument("-room_id",
                         dest="room_id",
@@ -122,7 +132,11 @@ def main():
         else:
             room_id = args.room_id
             user = get_user_from_room_id(room_id)
-            
+
+        output_dir = args.output_dir if args.output_dir else DEFAULT_OUTPUT_DIR
+        # ensure trailing slash for dir
+        if output_dir[-1] != os.sep:
+            output_dir = output_dir + os.sep
         mode = args.mode
 
         print("[*] USERNAME:", user)
@@ -144,7 +158,7 @@ def main():
                     continue
                 
                 room_id = get_room_id(user)
-                start_recording(user, room_id)
+                start_recording(user, room_id, output_dir)
     except Exception as ex:
         print(ex)
 
