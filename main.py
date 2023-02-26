@@ -118,6 +118,11 @@ def main():
                         action='store')
     args = parser.parse_args()
 
+    envUsers = os.environ['USERS_TO_WATCH']
+    if envUsers:
+        # TODO: Support arrays when Dan merges
+        args.user = envUsers
+
     try:
         if not args.user and not args.room_id:
             raise Exception("[*] Missing user/room_id value")
