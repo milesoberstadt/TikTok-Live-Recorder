@@ -1,0 +1,13 @@
+version: "3.4"
+services:
+  tiktok-recorder:
+    image: overcoded/tiktok-live-recorder:latest
+    restart: unless-stopped
+    volumes:
+      - ./output:/app/output
+    environment:
+      - USERS_TO_WATCH=some_tt_username
+
+volumes:
+  output:
+    name: tiktok-live-recorder-output

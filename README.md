@@ -27,6 +27,33 @@ $ python main.py -h
 
 To stop the recording: press ctrl + c once time and wait a few seconds.
 
+## Running in Docker
+In addition to making this portable, using Docker Compose can automatically restart the service should it crash. I setup GitHub Action to update the Docker image every time I create a release.
+
+```bash
+docker run -it -e USERS_TO_WATCH='SOME_TT_USER' overcoded/tiktok-live-recorder     
+```
+
+For Docker Compose, download the [docker-compose.yaml](https://raw.githubusercontent.com/milesoberstadt/TikTok-Live-Recorder/main/docker-compose.yaml), make your edits to the environment variables and run the following:
+
+```bash
+docker-compose up -d
+```
+
+### Updating to the newest release
+You'll need to recreate your container after pulling the latest image.
+
+```bash
+docker pull overcoded/tiktok-live-recorder:latest
+docker run -it -e USERS_TO_WATCH='SOME_TT_USER' overcoded/tiktok-live-recorder     
+```
+
+For Docker Compose
+```bash
+docker pull overcoded/tiktok-live-recorder:latest
+docker-compose down && docker-compose up -d && docker-compose logs -f
+```
+
 ## To-Do List
 - [x] Automatic Recording
 - [x] Recording by room_id
