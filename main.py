@@ -7,7 +7,7 @@ from argparse import RawTextHelpFormatter
 import os
 
 TIMEOUT = 5
-DEBUG = False
+DEBUG = True
 DEFAULT_OUTPUT_DIR = "output/"
 
 def banner() -> None:
@@ -28,7 +28,10 @@ def get_room_id(user: str) -> str:
         response.raise_for_status()
         content = response.text
         return re.search("room_id=(.*?)\"/>", content).group(1)
-    except req.HTTPError:
+    except req.HTTPError as error:
+        if DEBUG:
+            print(type(error))
+            print(error)
         print("[*] Captcha require or country blocked. Use a vpn or room_id.\n")
         print("[+] How to get room id: https://github.com/Michele0303/TikTok-Live-Recorder/blob/main/GUIDE.md#how-to-get-room_id")
         print("[+] Unrestricted country list: https://github.com/Michele0303/TikTok-Live-Recorder/edit/main/GUIDE.md#unrestricted-country")
