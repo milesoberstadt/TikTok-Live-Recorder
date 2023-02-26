@@ -6,7 +6,7 @@ services:
     volumes:
       - ./output:/app/output
     environment:
-      - USERS_TO_WATCH=highland_crystal
+      - USERS_TO_WATCH=some_tt_username
 
 volumes:
   output:
